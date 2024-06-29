@@ -1,3 +1,5 @@
+import random
+
 from card import Card
 
 
@@ -13,3 +15,6 @@ class CardSet:
         for color in ('black', 'red', 'blue'):
             joker = Card(15, color)
             self.cards.append(joker)
+
+    def shuffle(self):
+        random.shuffle(self.cards)
