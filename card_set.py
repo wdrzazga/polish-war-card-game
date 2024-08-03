@@ -18,3 +18,6 @@ class CardSet:
 
     def shuffle(self):
         random.shuffle(self.cards)
+
+    def draw_card(self):
+        self.cards.pop
