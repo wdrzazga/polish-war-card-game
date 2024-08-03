@@ -23,32 +23,40 @@ class Game:
     def turn(self):
         card1 = self.player1.active_deck.pop(0)
         card2 = self.player2.active_deck.pop(0)
+        stake = [card1, card2]
 
         if card1.value > card2.value:
-            self.player1.used_deck.append(card1)
-            self.player1.used_deck.append(card2)
+            self.player1.used_deck.extend(stake)
+            print(f"{self.player1.name} wins the turn with {card1} against {card2}!")
         elif card2.value > card1.value:
-            self.player2.used_deck.append(card1)
-            self.player2.used_deck.append(card2)
+            self.player2.used_deck.extend(stake)
+            print(f"{self.player2.name} wins the turn with {card2} against {card1}!")
         else:
-            stake = [card1, card2]
-            while True:
+            print(f"It's a tie! Starting a war with {card1} and {card2}.")
+            self.war(stake)
+
+    def war(self, stake):
+        while len(self.player1.active_deck) > 0 and len(self.player2.active_deck) > 0:
+            if len(self.player1.active_deck) > 0:
                 card1Hidden = self.player1.active_deck.pop(0)
-                card2Hidden = self.player2.active_deck.pop(0)
                 stake.append(card1Hidden)
+
+            if len(self.player2.active_deck) > 0:
+                card2Hidden = self.player2.active_deck.pop(0)
                 stake.append(card2Hidden)
 
+            if len(self.player1.active_deck) > 0 and len(self.player2.active_deck) > 0:
                 card1 = self.player1.active_deck.pop(0)
                 card2 = self.player2.active_deck.pop(0)
-                stake.append(card1)
-                stake.append(card2)
-                if card1.value != card2.value:
-                    break
+                stake.extend([card1, card2])
 
-            if card1.value > card2.value:
-                for card in stake:
-                    self.player1.used_deck.append(card)
+                if card1.value > card2.value:
+                    self.player1.used_deck.extend(stake)
+                    print(f"{self.player1.name} wins the war with {card1} against {card2}!")
+                    return
+                elif card2.value > card1.value:
+                    self.player2.used_deck.extend(stake)
+                    print(f"{self.player2.name} wins the war with {card2} against {card1}!")
+                    return
 
-            elif card2.value > card1.value:
-                for card in stake:
-                    self.player2.used_deck.append(card)
+            print("It's another tie during the war! Continuing...")
