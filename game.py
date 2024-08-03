@@ -1,3 +1,5 @@
+import random
+
 from card_set import CardSet
 from player import Player
 
@@ -34,6 +36,19 @@ class Game:
         else:
             print(f"It's a tie! Starting a war with {card1} and {card2}.")
             self.war(stake)
+
+    def conditionally_move_decks(self):
+        if len(self.player1.active_deck) == 0:
+            random.shuffle(self.player1.used_deck)
+            while len(self.player1.used_deck) > 0:
+                c = self.player1.used_deck.pop(0)
+                self.player1.active_deck.append(c)
+
+        if len(self.player1.active_deck) == 0:
+            random.shuffle(self.player1.used_deck)
+            while len(self.player1.used_deck) > 0:
+                c = self.player1.used_deck.pop(0)
+                self.player1.active_deck.append(c)
 
     def war(self, stake):
         while len(self.player1.active_deck) > 0 and len(self.player2.active_deck) > 0:
